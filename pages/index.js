@@ -25,7 +25,6 @@ export default function Home() {
 
   const handleProvideAnswer = (e) => {
     e.preventDefault()
-    // In a real app, this would save the answer to the database
     setMode('select')
   }
 
@@ -59,7 +58,96 @@ export default function Home() {
           <CardDescription className="text-center text-white">ARKM KNIGHT WATCH</CardDescription>
         </CardHeader>
         <CardContent>
-          {/* Rest of your component code */}
+          {mode === 'select' && (
+            <div className="flex flex-col space-y-4">
+              <Button onClick={() => setMode('ask')} className="w-full bg-white text-black hover:bg-white hover:text-black hover:font-bold transition-all">
+                Ask a Question
+              </Button>
+              <Button onClick={() => setMode('provide')} className="w-full bg-white text-black hover:bg-white hover:text-black hover:font-bold transition-all">
+                Provide an Answer
+              </Button>
+            </div>
+          )}
+
+          {mode === 'ask' && (
+            <form onSubmit={handleAskQuestion} className="space-y-4">
+              <Input
+                type="text"
+                placeholder="Enter your question"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                className="bg-white border-white text-black placeholder-gray-500 hover:font-bold transition-all"
+              />
+              <div className="flex space-x-2">
+                <Button type="submit" className="flex-1 bg-white text-black hover:bg-white hover:font-bold transition-all">
+                  Ask
+                </Button>
+                <Button onClick={() => setMode('select')} className="flex-1 bg-white text-black hover:bg-white hover:font-bold transition-all">
+                  Back
+                </Button>
+              </div>
+              {searchResult && (
+                <Card className="mt-4 bg-black border-white">
+                  <CardHeader>
+                    <CardTitle className="text-xl text-white">Answer</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="mb-2 text-white">{searchResult.answer}</p>
+                    <p className="text-sm text-white">Department: {searchResult.department}</p>
+                    <p className="text-sm text-white">Owner: {searchResult.owner}</p>
+                    <p className="text-sm text-white">Answered by: {searchResult.answerProvider}</p>
+                  </CardContent>
+                </Card>
+              )}
+            </form>
+          )}
+
+          {mode === 'provide' && (
+            <form onSubmit={handleProvideAnswer} className="space-y-4">
+              <Input
+                type="text"
+                placeholder="Enter the question"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                className="bg-white border-white text-black placeholder-gray-500 hover:font-bold transition-all"
+              />
+              <Textarea
+                placeholder="Provide the answer"
+                value={answer}
+                onChange={(e) => setAnswer(e.target.value)}
+                className="bg-white border-white text-black placeholder-gray-500 hover:font-bold transition-all"
+              />
+              <Input
+                type="text"
+                placeholder="Department"
+                value={department}
+                onChange={(e) => setDepartment(e.target.value)}
+                className="bg-white border-white text-black placeholder-gray-500 hover:font-bold transition-all"
+              />
+              <Input
+                type="text"
+                placeholder="Department owner"
+                value={owner}
+                onChange={(e) => setOwner(e.target.value)}
+                className="bg-white border-white text-black placeholder-gray-500 hover:font-bold transition-all"
+              />
+              <Input
+                type="text"
+                placeholder="Your name (Answer Provider)"
+                value={answerProvider}
+                onChange={(e) => setAnswerProvider(e.target.value)}
+                className="bg-white border-white text-black placeholder-gray-500 hover:font-bold transition-all"
+              />
+              <div className="flex space-x-2">
+                <Button type="submit" className="flex-1 bg-white text-black hover:bg-white hover:font-bold transition-all">
+                  Submit
+                </Button>
+                <Button onClick={() => setMode('select')} className="flex-1 bg-white text-black hover:bg-white hover:font-bold transition-all">
+                  Back
+                </Button>
+              </div>
+            </form>
+          )}
         </CardContent>
       </Card>
     </div>
